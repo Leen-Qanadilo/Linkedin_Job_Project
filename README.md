@@ -56,11 +56,172 @@ Then, in Databricks, the following steps were applied to each dataset:
 - Validated the final joined dataset.
 - Confirmed no duplicate job_link entries.
 
-**3. Gold Layer — Feature Engineering (In Progress)**
+3. Gold Layer — Feature Engineering 
 
-- Checked data types.
-- Normalized text.
-- Mapped values to fewer categories.
--Extracted a new column: job_role.
-- Plotted a bar chart to inspect the distribution of the new categories.
-# Linkedin_Job_Project
+Checked data types.
+Normalized text.
+Mapped values to fewer categories.
+Extracted a new column: job_role.
+Plotted a bar chart to inspect the distribution of the new categories.
+extracted target colum job roles using the job titles and did EDA saved this cleaned file
+
+then we did the other things frm data splitting till the end... in another notebokk
+
+4. Gold Layer — Advanced NLP Feature Engineering
+
+After completing basic cleaning and category mapping, more advanced text-based feature extraction was applied to prepare the dataset for machine learning.
+
+4.1 Combine Text Columns
+
+Created a new column raw_text by merging:
+
+job_summary
+
+job_skills
+
+This unified text field served as the input to all NLP steps.
+
+4.2 Text Cleaning
+
+Applied a custom UDF to clean text by:
+
+converting to lowercase
+
+removing links (http, https, www)
+
+removing numbers
+
+removing punctuation
+
+removing special characters
+
+collapsing repeated spaces
+
+Records with too-short text were filtered out.
+
+4.3 Text Length Features
+
+Added:
+
+text_length_words
+
+text_length_chars
+
+These features help measure verbosity and content richness.
+
+5. Sentiment Engineering
+
+Used the VADER Sentiment Analyzer from NLTK to compute:
+
+sentiment_pos
+
+sentiment_neu
+
+sentiment_neg
+
+sentiment_compound
+
+Sentiment features add emotional polarity information to job descriptions.
+
+6. TF-IDF Vectorization
+
+Used a Spark ML pipeline to convert cleaned text into numerical TF-IDF vectors.
+
+Pipeline steps:
+
+Tokenization
+
+Stopword Removal
+
+CountVectorizer (TF)
+
+IDF Transformation
+
+The pipeline was fitted only on training data, then applied to:
+
+train
+
+validation
+
+test
+
+TF-IDF output column: tfidf_features.
+
+7. Semantic Embeddings (BERT)
+
+Generated semantic embeddings using:
+SentenceTransformer: all-MiniLM-L6-v2
+
+Each cleaned text was converted into a dense vector representation and stored in:
+
+bert_embedding
+
+These embeddings capture semantic meaning beyond keyword matches.
+
+8. Readability Metrics
+
+Using TextStat, computed:
+
+readability_score (Flesch Reading Ease)
+
+This provides a measure of how easy or difficult the job description is to read.
+
+9. Subjectivity Score
+
+Using TextBlob, calculated:
+
+subjectivity (0 = objective, 1 = subjective)
+
+This feature captures how opinionated the job description is.
+
+10. Word-Level Complexity Features
+10.1 Average Word Length
+
+Calculated the mean number of characters per word:
+
+avg_word_length
+
+10.2 Lexical Diversity
+
+Computed vocabulary richness:
+
+lexical_diversity = unique_words / total_words
+
+Higher diversity indicates more varied language.
+
+11. Final Combined Feature Tables
+
+All engineered features were merged into a single final dataset for each split:
+
+combined_train
+
+combined_val
+
+combined_test
+
+These tables were saved into the Gold layer under:
+
+gold/linkedin_feature_v2/combined_*
+
+
+The final version of the dataset now includes:
+
+raw cleaned text
+
+TF-IDF vectors
+
+BERT embeddings
+
+sentiment features
+
+readability
+
+subjectivity
+
+text-length features
+
+lexical complexity metrics
+
+This Gold dataset is ready for downstream machine learning tasks such as job-role prediction.
+same style
+
