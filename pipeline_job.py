@@ -1,13 +1,14 @@
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient, load_component, dsl, Input
 
+
 SUBSCRIPTION_ID = "a485bb50-61aa-4b2f-bc7f-b6b53539b9d3"
 RESOURCE_GROUP = "rg-60106541"
-WORKSPACE_NAME = "LinkedinJobProject"
+WORKSPACE_NAME ="LinkedinJobsProject"
 COMPUTE_NAME = "cpu-cluster"
 
-# This is the materialized feature set path (Parquet) in your storage / feature store
-FEATURE_SET_PATH = "azureml://datastores/workspaceblobstore/paths/gold/linkedin_features_v1"  
+
+FEATURE_SET_PATH = "azureml://datastores/linkedinjob/paths/gold/linkedin_features_v1"  
 
 
 def get_ml_client():
@@ -57,7 +58,6 @@ if __name__ == "__main__":
     ml_client = get_ml_client()
 
     pipeline_job = gold_pipeline()
-
 
     submitted_job = ml_client.jobs.create_or_update(
         pipeline_job,
