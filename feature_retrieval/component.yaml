@@ -1,0 +1,24 @@
+name: feature_retrieval
+display_name: Feature Retrieval
+version: 1
+type: command
+
+inputs:
+  feature_set:
+    type: uri_file
+
+outputs:
+  train_data:
+    type: uri_file
+  test_data:
+    type: uri_file
+
+code: .
+
+command: >-
+  python run.py 
+  --feature_set ${{inputs.feature_set}}
+  --train_data ${{outputs.train_data}}
+  --test_data ${{outputs.test_data}}
+
+environment: azureml:sklearn-1.3:1
