@@ -1,0 +1,27 @@
+name: feature_selection
+display_name: Feature Selection (Baseline + GA)
+version: 1
+type: command
+
+inputs:
+  train_data:
+    type: uri_file
+
+outputs:
+  selected_features:
+    type: uri_file
+  baseline_metrics:
+    type: uri_file
+  ga_metrics:
+    type: uri_file
+
+code: .
+
+command: >-
+  python run.py
+  --train_data ${{inputs.train_data}}
+  --selected_features ${{outputs.selected_features}}
+  --baseline_metrics ${{outputs.baseline_metrics}}
+  --ga_metrics ${{outputs.ga_metrics}}
+
+environment: azureml:sklearn-1.3:1
