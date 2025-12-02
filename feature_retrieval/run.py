@@ -13,7 +13,7 @@ def main():
     df = pd.read_parquet(args.feature_set)
 
     # IMPORTANT: Change this to your real label name if different
-    label_col = "label"
+    label_col = "job_role"
 
     X = df.drop(columns=[label_col])
     y = df[label_col]
