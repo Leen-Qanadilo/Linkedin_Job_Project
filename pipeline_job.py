@@ -29,10 +29,10 @@ model_training = load_component("training/component.yaml")
     compute=COMPUTE_NAME,
     description="Gold Layer pipeline: feature retrieval -> selection -> training",
 )
-def gold_pipeline(feature_set_uri: str):
+def gold_pipeline():
     # Component A
     retrieval_job = feature_retrieval(
-        feature_set=feature_set_uri
+        feature_set=Input(type="uri_folder", path=FEATURE_SET_PATH)
     )
 
     # Component B
@@ -52,12 +52,12 @@ def gold_pipeline(feature_set_uri: str):
     }
 
 
+
 if __name__ == "__main__":
     ml_client = get_ml_client()
 
-    pipeline_job = gold_pipeline(
-        feature_set_uri=FEATURE_SET_PATH
-    )
+    pipeline_job = gold_pipeline()
+
 
     submitted_job = ml_client.jobs.create_or_update(
         pipeline_job,
